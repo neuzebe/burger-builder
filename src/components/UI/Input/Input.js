@@ -18,7 +18,7 @@ const input = (props) => {
       break;
     case ('select'):
       const options = [];
-      props.elementConfig.options.map(option => {
+      props.elementConfig.options.forEach(option => {
           options.push(<option key={option.value} value={option.value}>{option.displayValue}</option>)
       });
       inputElement = (<select onChange={props.changed} className={inputClasses.join(' ')}
