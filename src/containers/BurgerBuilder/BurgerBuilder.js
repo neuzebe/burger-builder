@@ -10,7 +10,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as burgerBuilderActions from '../../store/actions/index';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     purchasing:   false,
   };
@@ -79,7 +79,7 @@ class BurgerBuilder extends Component {
                         ingredients={this.props.ings}
                         purchaseCanceled={this.purchaseCanceledHandler}
                         purchaseContinued={this.purchaseContinuedHandler}
-                        price={this.props.price.toFixed(2)}
+                        price={this.props.price}
       />;
     }
 
