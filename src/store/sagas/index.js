@@ -1,4 +1,4 @@
-import { takeEvery } from 'redux-saga/effects';
+import { takeEvery, all } from 'redux-saga/effects';
 
 import * as actionTypes from '../actions/actionTypes';
 import { 
@@ -18,10 +18,14 @@ import {
  } from './order';
 
 export function* watchAuth(){
-  yield takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, logoutSaga);
-  yield takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga);
-  yield takeEvery(actionTypes.AUTH_USER, authUserSaga);
-  yield takeEvery(actionTypes.AUTH_CHECK_STATE, authCheckStateSaga);
+  //this approach will make the methods run concurrently
+  //this can be done anywhere, not just for takeEvery. e.g two axios requests
+  yield all([
+    takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, logoutSaga),
+    takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga),
+    takeEvery(actionTypes.AUTH_USER, authUserSaga),
+    takeEvery(actionTypes.AUTH_CHECK_STATE, authCheckStateSaga),
+  ])
 }
 
 export function* watchBurgerBuilder(){
