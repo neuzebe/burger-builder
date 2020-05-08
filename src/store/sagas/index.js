@@ -1,4 +1,4 @@
-import { takeEvery, all } from 'redux-saga/effects';
+import { takeEvery, all, takeLatest } from 'redux-saga/effects';
 
 import * as actionTypes from '../actions/actionTypes';
 import { 
@@ -33,6 +33,7 @@ export function* watchBurgerBuilder(){
 }
 
 export function* watchOrder(){
-  yield takeEvery(actionTypes.PURCHASE_BURGER, purchaseBurgerSaga);
+  // this will auto cancel any other on-going executions and run the newest one
+  yield takeLatest(actionTypes.PURCHASE_BURGER, purchaseBurgerSaga);
   yield takeEvery(actionTypes.FETCH_ORDERS, fetchOrdersSaga);
 }
