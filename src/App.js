@@ -1,4 +1,4 @@
-import React , { Component } from 'react';
+import React , { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
@@ -19,40 +19,39 @@ const asyncAuth = asyncComponent(() => {
   return import('./containers/Auth/Auth');
 })
 
-class App extends Component{
-  componentDidMount(){
-    this.props.onTryAutoAuth();
-  }
+const App = props => {
+  useEffect(() => {
+    props.onTryAutoAuth();
+  }, [])
 
-  render(){
-    let routes = (
+  let routes = (
+    <Switch>
+      <Route path="/auth" exact component={asyncAuth}/>
+      <Route path="/" exact component={BurgerBuilder}/>
+      <Redirect to='/'/>
+    </Switch>
+  )
+  
+  if(props.isAuthenticated){
+    routes = (
       <Switch>
-        <Route path="/auth" exact component={asyncAuth}/>
         <Route path="/" exact component={BurgerBuilder}/>
+        <Route path="/orders" exact component={asyncOrders}/>
+        <Route path="/checkout" component={asyncCheckout}/>
+        <Route path="/logout" component={Logout}/>
+        <Route path="/auth" exact component={asyncAuth}/>
         <Redirect to='/'/>
       </Switch>
     )
-    
-    if(this.props.isAuthenticated){
-      routes = (
-        <Switch>
-          <Route path="/" exact component={BurgerBuilder}/>
-          <Route path="/orders" exact component={asyncOrders}/>
-          <Route path="/checkout" component={asyncCheckout}/>
-          <Route path="/logout" component={Logout}/>
-          <Route path="/auth" exact component={asyncAuth}/>
-          <Redirect to='/'/>
-        </Switch>
-      )
-    }
-    return (
-      <div>
-        <Layout>
-          {routes}
-        </Layout>
-      </div>
-    );
   }
+  
+  return (
+    <div>
+      <Layout>
+        {routes}
+      </Layout>
+    </div>
+  );
 }
 
 const mapStateToProps = state => {
