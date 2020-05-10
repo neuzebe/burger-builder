@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom';
 import { updateObject, checkValidity } from '../../shared/utility';
 
 const  Auth = props => {
+  const { onSetAuthRedirectPath, buildingBurger, authRedirectPath  } = props;
   const [ isSignUp, setIsSignUp ] = useState(true);
   const [authForm, setAuthForm] = useState({
     email: {
@@ -42,10 +43,10 @@ const  Auth = props => {
   })
 
   useEffect( () => {
-    if(!props.buildingBurger && props.authRedirectPath !== '/'){
-      props.onSetAuthRedirectPath();
+    if(!buildingBurger && authRedirectPath !== '/'){
+      onSetAuthRedirectPath();
     }
-  }, []);
+  }, [onSetAuthRedirectPath, buildingBurger, authRedirectPath]);
 
   const inputChangedHandler = (event, controlName) => {
     const updatedControls = updateObject(authForm,  {
